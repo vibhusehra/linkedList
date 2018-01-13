@@ -20,6 +20,8 @@ void deleteEnd();	//deletes the last element
 void deleteStart();	//deletes the first element
 void deletePos(int);	//deletes a particular element
 
+int findPos(node*,int);
+
 int main()
 {	start = NULL;
 	end = NULL;
@@ -32,7 +34,7 @@ int main()
 	newptr = createNode(num);
 	
 	cout<<"where do you want to add this number\n1)Starting of the list\n2)End of the list\n3)Delete from beginning\n4)Delete from the end";
-	cout<<"\n5)Insertion at a particular position\n6)Delete an element at a particular position"<<endl;
+	cout<<"\n5)Insertion at a particular position\n6)Delete an element at a particular position\n7)search"<<endl;
 	cin>>ch;
 
 	switch(ch){
@@ -65,6 +67,20 @@ int main()
 			deletePos(pos);
 			display(start);
 			break;	
+		case 7:
+			cout<<"enter the element that you want to search : ";
+			int elem;
+			cin>>elem;
+			node* find = new node;
+			find = start;
+			int result = findPos(find,elem);
+			if(result == 0){
+				cout<<"element noot found "<<endl;
+			}
+			else{
+				cout<<"element found at "<<result<<" index"<<endl;
+			}
+			
 	}
 	cout<<"do you want to continue? : ";
 	cin>>choice;
@@ -168,4 +184,18 @@ void deletePos(int pos)
 	}
 	prev->next = current->next;
 	delete current;
+}
+
+int findPos(node* current,int element)
+{	static int pos = 1;
+	if(current == NULL){
+		return 0;
+	}
+	if(current->data == element){
+		return pos;
+	}
+	else{
+		pos++;
+		return findPos(current->next,element);
+	}
 }
