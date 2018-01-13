@@ -20,7 +20,7 @@ void deleteEnd();	//deletes the last element
 void deleteStart();	//deletes the first element
 void deletePos(int);	//deletes a particular element
 
-int findPos(node*,int);
+int findPos(node*,int,int);
 
 int main()
 {	start = NULL;
@@ -73,13 +73,16 @@ int main()
 			cin>>elem;
 			node* find = new node;
 			find = start;
-			int result = findPos(find,elem);
+			int result = findPos(find,elem,1);
 			if(result == 0){
-				cout<<"element noot found "<<endl;
+				cout<<"element not found "<<endl;
 			}
 			else{
 				cout<<"element found at "<<result<<" index"<<endl;
 			}
+			break;
+		//case 8:
+		//cout<<"enter 2 elements that you want to swap";	
 			
 	}
 	cout<<"do you want to continue? : ";
@@ -186,9 +189,8 @@ void deletePos(int pos)
 	delete current;
 }
 
-int findPos(node* current,int element)
-{	static int pos = 1;
-	if(current == NULL){
+int findPos(node* current,int element,int pos)
+{	if(current == NULL){
 		return 0;
 	}
 	if(current->data == element){
@@ -196,6 +198,6 @@ int findPos(node* current,int element)
 	}
 	else{
 		pos++;
-		return findPos(current->next,element);
+		return findPos(current->next,element,pos);
 	}
 }
