@@ -21,6 +21,7 @@ void deleteStart();	//deletes the first element
 void deletePos(int);	//deletes a particular element
 
 int findPos(node*,int,int);
+void swapNodes(node*,int,int);
 
 int main()
 {	start = NULL;
@@ -34,40 +35,47 @@ int main()
 	newptr = createNode(num);
 	
 	cout<<"where do you want to add this number\n1)Starting of the list\n2)End of the list\n3)Delete from beginning\n4)Delete from the end";
-	cout<<"\n5)Insertion at a particular position\n6)Delete an element at a particular position\n7)search"<<endl;
+	cout<<"\n5)Insertion at a particular position\n6)Delete an element at a particular position\n7)search\n8)swap 2 elements"<<endl;
 	cin>>ch;
 
 	switch(ch){
 		case 1:
+			{
 			addBegin(newptr);
 			display(start);
-			break;
+			break;}
 		case 2:
+			{
 			addEnd(newptr);
 			display(start);
-			break;	
+			break;}	
 		case 3:
+			{
 			deleteStart();
 			display(start);	
-			break;
+			break;}
 		case 4:
-			deleteEnd();
+		{	deleteEnd();
 			display(start);
-			break;	
+			break;}	
 		case 5:
+			{
 			cout<<"enter the position where you want to add the new node : ";
 			int pos;
 			cin>>pos;
 			insertPos(pos,newptr);
 			display(start);
-			break;	
+			break;}	
 		case 6:
+		{
 			cout<<"enter the position : ";
+			int pos;
 			cin>>pos;
 			deletePos(pos);
 			display(start);
-			break;	
+			break;	}
 		case 7:
+		{
 			cout<<"enter the element that you want to search : ";
 			int elem;
 			cin>>elem;
@@ -80,9 +88,15 @@ int main()
 			else{
 				cout<<"element found at "<<result<<" index"<<endl;
 			}
-			break;
-		//case 8:
-		//cout<<"enter 2 elements that you want to swap";	
+			break;}
+		case 8:
+	{
+		cout<<"enter 2 elements that you want to swap";	
+		int num1,num2;
+		cin>>num1>>num2;
+		swapNodes(start, num1, num2);
+		display(start);
+		break; }
 			
 	}
 	cout<<"do you want to continue? : ";
@@ -201,3 +215,46 @@ int findPos(node* current,int element,int pos)
 		return findPos(current->next,element,pos);
 	}
 }
+
+void swapNodes(node* headRef,int num1,int num2)
+{	
+	node* curr1 = headRef;
+	node* prev1 = NULL;
+	node* prev2 = NULL;
+	
+	if(num1 == num2){
+		cout<<"same numbers ..."<<endl;
+		return;
+	}
+	while(curr1 !=NULL && curr1->data != num1){
+		prev1 = curr1;
+		curr1 = curr1->next;
+	}
+	node* curr2 = headRef;
+	while(curr2 !=NULL && curr2->data != num2){
+		prev2 = curr2;
+		curr2 = curr2->next;
+	}
+	
+	if(curr1 == NULL || curr2 == NULL){	//if one of the element is not present in the list
+		cout<<"Number not found in the list. Returning.."<<endl;
+		return;
+	}
+	if(prev1 != NULL){	//if element 1 is not the head of the list
+		prev1->next = curr2;
+	}
+	else
+		headRef = curr2;	//make element 2 as the head of the list
+		
+	if(prev2 != NULL){	//if element 2 is not the head of the list
+	prev2->next = curr1;
+	}
+	else 
+		headRef = curr1;	//make element 1 as the head of the list
+		
+	node*temp = curr1->next;
+	curr1->next = curr2->next;
+	curr2->next = temp;
+	start = headRef;
+}
+	
