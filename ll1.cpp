@@ -19,6 +19,7 @@ void insertPos(int,node*);	//adds an element at a particular position
 void deleteEnd();	//deletes the last element
 void deleteStart();	//deletes the first element
 void deletePos(int);	//deletes a particular element
+void deleteList(node*);	//will delete the complete list
 
 int findPos(node*,int,int);
 void swapNodes(node*,int,int);
@@ -35,7 +36,8 @@ int main()
 	newptr = createNode(num);
 	
 	cout<<"where do you want to add this number\n1)Starting of the list\n2)End of the list\n3)Delete from beginning\n4)Delete from the end";
-	cout<<"\n5)Insertion at a particular position\n6)Delete an element at a particular position\n7)search\n8)swap 2 elements"<<endl;
+	cout<<"\n5)Insertion at a particular position\n6)Delete an element at a particular position\n7)search\n8)swap 2 elements";
+	cout<<"9)Delete the list"<<endl;
 	cin>>ch;
 
 	switch(ch){
@@ -97,6 +99,13 @@ int main()
 		swapNodes(start, num1, num2);
 		display(start);
 		break; }
+		
+		case 9:{
+			cout<<"deleting the list ...";
+			deleteList(start);
+			display(start);
+			break;
+		}
 			
 	}
 	cout<<"do you want to continue? : ";
@@ -129,6 +138,9 @@ void addBegin(node*np)
 }
 void display(node*np)
 {
+	if(np == NULL){
+		cout<<"Empty list "<<endl;
+	}
 	while(np !=NULL){
 	
 	cout<<np->data<<"->";
@@ -163,8 +175,8 @@ void deleteStart()
 
 void deleteEnd()
 {
-	node *current = new node;
-	node *previous = new node;
+	node *current;
+	node *previous;
 	current = start;
 	
 	while(current->next != NULL){
@@ -177,8 +189,20 @@ void deleteEnd()
 }
 
 void insertPos(int pos,node* np)
-{	node* prev = new node;
-	node* current = new node;
+{	node* prev ;
+	node* current;
+	
+	int len=0;
+	current = start;
+	while(current != NULL){
+		len++;	//finds lenght
+		current = current->next;
+	}
+	
+	if(pos>len){
+		cerr<<"error! please try again"<<endl;
+		return;
+	}
 	
 	current = start;
 	for(int i=1;i<pos;i++){
@@ -191,8 +215,20 @@ void insertPos(int pos,node* np)
 
 void deletePos(int pos)
 {
-	node *current = new node;
-	node *prev = new node;
+	node *current;
+	node *prev;
+	
+		int len=0;
+	current = start;
+	while(current != NULL){
+		len++;	//finds lenght
+		current = current->next;
+	}
+	
+	if(pos>len){
+		cerr<<"error! please try again"<<endl;
+		return;
+	}
 	
 	current = start;
 	for(int i=1;i<pos;i++){
@@ -219,14 +255,15 @@ int findPos(node* current,int element,int pos)
 void swapNodes(node* headRef,int num1,int num2)
 {	
 	node* curr1 = headRef;
+	node* curr2 = headRef;
 	node* prev1 = NULL;
 	node* prev2 = NULL;
-	
+	node* temp = headRef;
 	if(num1 == num2){
 		cout<<"same numbers ..."<<endl;
 		return;
 	}
-	while(curr1 !=NULL && curr1->data != num1){
+	/*while(curr1 !=NULL && curr1->data != num1){
 		prev1 = curr1;
 		curr1 = curr1->next;
 	}
@@ -234,6 +271,19 @@ void swapNodes(node* headRef,int num1,int num2)
 	while(curr2 !=NULL && curr2->data != num2){
 		prev2 = curr2;
 		curr2 = curr2->next;
+	}*/
+	
+	while(temp !=NULL){
+		if(curr1->data != num1){
+			
+		prev1 = curr1;
+		curr1 = curr1->next;
+		}
+		if(curr2->data != num2){
+		prev2 = curr2;
+		curr2 = curr2->next;	
+		}
+		temp = temp->next;
 	}
 	
 	if(curr1 == NULL || curr2 == NULL){	//if one of the element is not present in the list
@@ -252,9 +302,25 @@ void swapNodes(node* headRef,int num1,int num2)
 	else 
 		headRef = curr1;	//make element 1 as the head of the list
 		
-	node*temp = curr1->next;
+	temp = curr1->next;
 	curr1->next = curr2->next;
 	curr2->next = temp;
 	start = headRef;
 }
+
+void deleteList(node*head)
+{
+	node* current = head;
+	node* next;
 	
+	while(current != NULL){
+		next = current->next;
+		delete current;
+		current = next;
+	}
+	head = NULL;
+	start = head;
+	
+}
+
+
